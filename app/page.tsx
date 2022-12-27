@@ -224,10 +224,10 @@ const Subtitle = styled.span`
   font-weight: 500;
   color: #363636;
   border-left: 3px solid #181818;
-  margin-left: 5.5px;
+  margin-left: 5.3px;
   padding-left: 5.5px;
   @media screen and (max-width: 700px) {
-    margin-top: -7px;
+    margin-top: -6px;
   }
 `
 

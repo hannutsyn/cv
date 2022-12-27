@@ -7,6 +7,7 @@ import { IconButton } from 'components/IconButton'
 import Button from 'components/Cell'
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
+import Loading from './loading'
 
 const mainSkills = [
   { name: 'CSS', icon: 'akar-icons:css-fill', color: '#264de4' },
@@ -34,6 +35,7 @@ const mainSkills = [
 export default function Home() {
   const [skills, setSkills] = useState<string[]>([])
   const [blow, setBlow] = useState(false)
+  const [isLoading, setLoading] = useState(true)
 
   const handleToggleSkill = (skill: string) =>
     setSkills((prev) => (prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]))
@@ -42,37 +44,56 @@ export default function Home() {
     setBlow(true)
   }
 
-  function timeDifference(previous: number) {
-    var msPerMinute = 60 * 1000
-    var msPerHour = msPerMinute * 60
-    var msPerDay = msPerHour * 24
-    var msPerMonth = msPerDay * 30
-    var msPerYear = msPerDay * 365
-    console.log(previous, 'PRV')
-    var elapsed = Date.now() - previous
+  //   responsible for implementing the frontend part of the applications
+  //app for social medias management
+  //app for social medias management
 
-    if (elapsed < msPerMinute) {
-      return Math.round(elapsed / 1000) + ' seconds ago'
-    } else if (elapsed < msPerHour) {
-      return Math.round(elapsed / msPerMinute) + ' minutes ago'
-    } else if (elapsed < msPerDay) {
-      return Math.round(elapsed / msPerHour) + ' hours ago'
-    } else if (elapsed < msPerMonth) {
-      return Math.round(elapsed / msPerDay) + ' days ago'
-    } else if (elapsed < msPerYear) {
-      return Math.round(elapsed / msPerMonth) + ' months ago'
-    } else {
-      const years = Math.round(elapsed / msPerYear)
-      // const month = timeDifference(elapsed - msPerYear)
-      return years + ' years ago'
+  // /auth
+  // /roles
+  // /modals
+  // /
+
+  function getTimeDifference(previous: number): string {
+    const msPerDay = 60 * 1000 * 60 * 24
+    const msPerMonth = msPerDay * 30
+    const msPerYear = msPerDay * 365
+
+    const diff = Date.now() - previous
+
+    let yymm: number[] = []
+
+    const getYearMonthFrom = (start: number): number[] => {
+      if (start >= msPerYear) {
+        const fullYears = Math.floor(start / msPerYear)
+        if (start % msPerYear !== 0) {
+          yymm = [fullYears]
+          const diff = start - fullYears * msPerYear
+          return getYearMonthFrom(diff)
+        }
+        return (yymm = [fullYears])
+      } else {
+        return (yymm = [...yymm, Math.round(start / msPerMonth)])
+      }
     }
-  }
 
-  console.log(timeDifference(Date.parse('2018-09-01 18:00:00')))
+    const yearMonth = getYearMonthFrom(diff)
+
+    return `[ ${yearMonth[0]} years` + ` ${yearMonth[1]} month ]`
+  }
 
   useEffect(() => {
     mainSkills.length === skills.length ? blowFn() : setBlow(false)
   }, [skills.length])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 1)
+  }, [])
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <Container>
@@ -80,22 +101,11 @@ export default function Home() {
         <Title>
           <Main>
             <span style={{ fontSize: '24px', fontWeight: '600', color: '#181818' }}>Yauheni&nbsp;Hannutsyn</span>
-            <span
-              style={{
-                fontSize: '24px',
-                fontWeight: '500',
-                color: '#181818',
-                borderLeft: '3px solid #181818',
-                marginLeft: '20px',
-                paddingLeft: '20px',
-              }}
-            >
-              Frontend&nbsp;Developer
-            </span>
+            <Subtitle>Frontend&nbsp;Developer</Subtitle>
           </Main>
           <Location>
-            {/* <Icon icon="carbon:location" color="#3e6889" /> */}
-            <Icon icon="twemoji:flag-portugal" />
+            <Icon icon="carbon:location" color="#3e6889" />
+            {/* <Icon icon="twemoji:flag-portugal" /> */}
             <span
               style={{
                 fontSize: '16px',
@@ -140,35 +150,36 @@ export default function Home() {
 
       <Experience>
         <h3 style={{ marginBottom: 0 }}>Education:</h3>
-        <span style={{ fontSize: '16px', fontWeight: '500', color: '#8a8a8a' }}>[2010-2015]</span>
+        <span style={{ fontSize: '16px', fontWeight: '500', color: '#8a8a8a', padding: '4px 0' }}>[ 2010 - 2015 ]</span>
         <div>Yanka Kupala State University of Grodno</div>
         <div>Bachelor of Mechanical Engineering</div>
       </Experience>
       <Experience>
         <h3 style={{ marginBottom: 0 }}> Experience:</h3>
-        <span style={{ fontSize: '18px', fontWeight: '500', color: '#8a8a8a' }}>
-          [4 years 5 month 10 days 8 hours 5 mins 38s]
+        <span style={{ fontSize: '16px', fontWeight: '500', color: '#8a8a8a', padding: '4px 0' }}>
+          {getTimeDifference(Date.parse('2018-09-01 18:00:00'))}
         </span>
-        <div>
-          Cogia intelligence[Jun 2021 - present]
-          <div style={{ fontSize: '16px', fontWeight: '500', color: '#777777' }}>
+        <div style={{ padding: '4px 0' }}>
+          Cogia intelligence
+          <span style={{ fontSize: '14px', fontWeight: '500', color: '#8a8a8a' }}> [ Jun 2021 - present ]</span>
+          {/* <div style={{ fontSize: '16px', fontWeight: '500', color: '#777777' }}>
             Development of applications for online casinos, participation in application development: app for helpdesk,
             campaign management app, affiliate network management app, admin panels
-          </div>
+          </div> */}
         </div>
-        <div>
-          Yellow square[Sep 2018 - May 2021]
-          <div style={{ fontSize: '16px', fontWeight: '500', color: '#777777' }}>
+        <div style={{ padding: '4px 0' }}>
+          Yellow square
+          <span style={{ fontSize: '14px', fontWeight: '500', color: '#8a8a8a' }}> [ Sep 2018 - May 2021 ]</span>
+          {/* <div style={{ fontSize: '16px', fontWeight: '500', color: '#777777' }}>
             Development of applications for online casinos, participation in application development: app for helpdesk,
             campaign management app, affiliate network management app, admin panels
           </div>
-          <a>https://affmore.com/</a>
+          <a>https://affmore.com/</a> */}
         </div>
       </Experience>
 
       <Skills>
         <h3>Skills</h3>
-        <Icons></Icons>
         <SkillsGrid>
           {mainSkills.map(({ icon, color, name }) => (
             <Button
@@ -202,13 +213,27 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
 
-  @media screen and (max-width: 520px) {
+  @media screen and (max-width: 492px) {
     flex-direction: column;
+  }
+`
+
+const Subtitle = styled.span`
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+  color: #363636;
+  border-left: 3px solid #181818;
+  margin-left: 5.5px;
+  padding-left: 5.5px;
+  @media screen and (max-width: 700px) {
+    margin-top: -7px;
   }
 `
 
 const Main = styled.div`
   display: flex;
+  flex-flow: wrap;
 `
 
 const Location = styled.div`
@@ -224,6 +249,9 @@ const Title = styled.div`
   width: 100%;
   padding: 32px;
   border-right: 1px solid #d7d7d7;
+  @media screen and (max-width: 492px) {
+    border-right: none;
+  }
 `
 
 const Row = styled.div`
@@ -285,7 +313,6 @@ const SkillsGrid = styled.div`
   }
 
   .isSelected {
-    /* background: #36fd7f; */
     background-color: #98ff83a3;
   }
 
@@ -299,11 +326,5 @@ const SkillsGrid = styled.div`
         filter: hue-rotate(-360deg);
       }
     }
-  }
-`
-
-const Icons = styled.div`
-  & > :not(:first-child) {
-    margin-left: 4px;
   }
 `

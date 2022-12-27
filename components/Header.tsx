@@ -2,7 +2,7 @@ import { FC } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 
-const NavBar: FC = () => {
+const Header: FC = () => {
   return (
     <Navigation>
       <Link href="/">About</Link>
@@ -36,4 +36,4 @@ const Navigation = styled.nav`
   }
 `
 
-export default NavBar
+export default Header

@@ -3,7 +3,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 export default function Loading() {
-  console.log('LOADING')
   return (
     <Container>
       <Tag />

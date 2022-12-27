@@ -227,7 +227,7 @@ const Subtitle = styled.span`
   margin-left: 5.3px;
   padding-left: 5.5px;
   @media screen and (max-width: 700px) {
-    margin-top: -6px;
+    margin-top: -8px;
   }
 `
 

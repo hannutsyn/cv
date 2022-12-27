@@ -251,6 +251,7 @@ const Title = styled.div`
   border-right: 1px solid #d7d7d7;
   @media screen and (max-width: 492px) {
     border-right: none;
+    padding: 32px 32px 16px;
   }
 `
 
@@ -284,6 +285,7 @@ const Connect = styled.div`
   justify-content: center;
   @media screen and (max-width: 520px) {
     width: 100%;
+    padding: 16px 32px;
     border: none;
     align-self: center;
   }

@@ -116,10 +116,9 @@ export default function Home() {
           timeframe="[ Sep 2018 - May 2021 ]"
           points={[
             'Involved in client-side app development, including implementing new features, fixing bugs, and making UI/UX improvements',
-            "Worked on migrating to Redux/Toolkit to improve the app's performance and maintainability",
             'Had regular communication with the customer to understand their needs and gather feedback on the app',
-            'Worked on migrating the app to TypeScript to improve code maintainability and performance',
-            'Utilized technologies such as TypeScript, React, Redux / toolkit, styled-components, Formik, MaterialUI, React Testing Library',
+            "Worked on migrating to TypeScript, Redux/toolkit to improve the app's performance and maintainability",
+            'Utilized technologies such as TypeScript, React, Redux/toolkit, styled-components, Formik, MaterialUI, React Testing Library',
           ]}
         />
       </InfoBlock>

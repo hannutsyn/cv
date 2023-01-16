@@ -19,7 +19,6 @@ const Info = styled.div`
   display: flex;
   flex-direction: column;
   padding: 16px 32px;
-  border-bottom: 0.5px solid #ccc;
   border-top: 0.5px solid #ccc;
 `
 

@@ -4,42 +4,28 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import Icon from 'components/Icon'
 import { IconButton } from 'components/IconButton'
-import Button from 'components/Cell'
-import { useEffect, useState } from 'react'
-import cn from 'classnames'
+import React, { FC, useEffect, useState } from 'react'
 import Loading from './loading'
 import Skills from 'components/Skills'
+import InfoBlock from 'components/InfoBlock'
+import WorkPoint from 'components/WorkPoint'
+import Language from 'components/Language'
+
+const STARTED_DATE = new Date('September 1, 2018')
 
 export default function Home() {
   const [isLoading, setLoading] = useState(true)
 
-  function getTimeDifference(previous: number): string {
-    const msPerDay = 60 * 1000 * 60 * 24
-    const msPerMonth = msPerDay * 30
-    const msPerYear = msPerDay * 365
-
-    const diff = Date.now() - previous
-
-    let yymm: number[] = []
-
-    const getYearMonthFrom = (start: number): number[] => {
-      if (start >= msPerYear) {
-        const fullYears = Math.floor(start / msPerYear)
-        if (start % msPerYear !== 0) {
-          yymm = [fullYears]
-          const diff = start - fullYears * msPerYear
-          return getYearMonthFrom(diff)
-        }
-        return (yymm = [fullYears])
-      } else {
-        return (yymm = [...yymm, Math.floor(start / msPerMonth)])
-      }
-    }
-
-    const yearMonth = getYearMonthFrom(diff)
-
-    return `[ ${yearMonth[0]} years` + ` ${yearMonth[1]} month ]`
+  function timePassedFrom(date: Date): { years: number; months: number } {
+    const msInDay = 1000 * 60 * 60 * 24
+    const currentDate = new Date()
+    const timePassed = currentDate.getTime() - date.getTime()
+    const years = Math.floor(timePassed / (msInDay * 365))
+    const months = Math.floor((timePassed / (msInDay * 30)) % 12)
+    return { years, months }
   }
+
+  const { years, months } = timePassedFrom(STARTED_DATE)
 
   useEffect(() => {
     setTimeout(() => {
@@ -60,12 +46,12 @@ export default function Home() {
             <Subtitle>Frontend&nbsp;Developer</Subtitle>
           </Main>
           <Location>
-            <Icon icon="carbon:location" color="#3e6889" />
+            <Icon icon="carbon:location" color="#617a8e" />
             <span
               style={{
                 fontSize: '16px',
                 fontWeight: '500',
-                color: '#3e6889',
+                color: '#617a8e',
                 marginLeft: '4px',
                 marginRight: '4px',
               }}
@@ -102,36 +88,41 @@ export default function Home() {
           </Socials>
         </Connect>
       </Header>
+      <InfoBlock title="Languages:">
+        <div style={{ display: 'flex' }}>
+          <Language icon={<Icon icon="emojione:flag-for-russia" />} language="Russian" level="native" />
+          <Language icon={<Icon icon="emojione:flag-for-united-states" />} language="English" level="B2" />
+          <Language icon={<Icon icon="emojione:flag-for-poland" />} language="Polish" level="A2" />
+        </div>
+      </InfoBlock>
 
-      <Experience>
-        <h3 style={{ marginBottom: 0 }}>Education:</h3>
-        <span style={{ fontSize: '16px', fontWeight: '500', color: '#8a8a8a', padding: '4px 0' }}>[ 2010 - 2015 ]</span>
+      <InfoBlock title="Education:" subtitle="[ 2010 - 2015 ]">
         <div>Yanka Kupala State University of Grodno</div>
         <div>Bachelor of Mechanical Engineering</div>
-      </Experience>
-      <Experience>
-        <h3 style={{ marginBottom: 0 }}> Experience:</h3>
-        <span style={{ fontSize: '16px', fontWeight: '500', color: '#8a8a8a', padding: '4px 0' }}>
-          {getTimeDifference(Date.parse('2018-09-01 18:00:00'))}
-        </span>
-        <div style={{ padding: '4px 0' }}>
-          Cogia intelligence
-          <span style={{ fontSize: '14px', fontWeight: '500', color: '#8a8a8a' }}> [ Jun 2021 - present ]</span>
-          {/* <div style={{ fontSize: '16px', fontWeight: '500', color: '#777777' }}>
-            Development of applications for online casinos, participation in application development: app for helpdesk,
-            campaign management app, affiliate network management app, admin panels
-          </div> */}
-        </div>
-        <div style={{ padding: '4px 0' }}>
-          Yellow square
-          <span style={{ fontSize: '14px', fontWeight: '500', color: '#8a8a8a' }}> [ Sep 2018 - May 2021 ]</span>
-          {/* <div style={{ fontSize: '16px', fontWeight: '500', color: '#777777' }}>
-            Development of applications for online casinos, participation in application development: app for helpdesk,
-            campaign management app, affiliate network management app, admin panels
-          </div>
-          <a>https://affmore.com/</a> */}
-        </div>
-      </Experience>
+      </InfoBlock>
+      <InfoBlock title="Experience:" subtitle={`[ ${years} years, ${months} months ]`}>
+        <WorkPoint
+          company="Cogia Intelligence"
+          timeframe="[ Jun 2021 - present ]"
+          points={[
+            "Developed and maintained the company's flagship web application using React, Redux, and TypeScript",
+            'Implemented new features and enhancements to improve user experience',
+            'Collaborated with cross-functional teams to deliver high-quality software solutions',
+            'Led a team of junior developers and provided mentorship and guidance',
+          ]}
+        />
+        <WorkPoint
+          company="Yellow Square"
+          timeframe="[ Sep 2018 - May 2021 ]"
+          points={[
+            'Involved in client-side app development, including implementing new features, fixing bugs, and making UI/UX improvements',
+            "Worked on migrating to Redux/Toolkit to improve the app's performance and maintainability",
+            'Had regular communication with the customer to understand their needs and gather feedback on the app',
+            'Worked on migrating the app to TypeScript to improve code maintainability and performance',
+            'Utilized technologies such as TypeScript, React, Redux / toolkit, styled-components, Formik, MaterialUI, React Testing Library',
+          ]}
+        />
+      </InfoBlock>
       <Skills />
     </Container>
   )
@@ -229,12 +220,4 @@ const Connect = styled.div`
     border: none;
     align-self: center;
   }
-`
-
-const Experience = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 16px 32px;
-  border-bottom: 0.5px solid #ccc;
-  border-top: 0.5px solid #ccc;
 `

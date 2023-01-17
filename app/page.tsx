@@ -10,8 +10,11 @@ import Skills from 'components/Skills'
 import InfoBlock from 'components/InfoBlock'
 import WorkPoint from 'components/WorkPoint'
 import Language from 'components/Language'
+import ReactGA from 'react-ga'
 
 const STARTED_DATE = new Date('September 1, 2018')
+
+ReactGA.initialize('UA-254311165-1')
 
 export default function Home() {
   const [isLoading, setLoading] = useState(true)
@@ -28,6 +31,7 @@ export default function Home() {
   const { years, months } = timePassedFrom(STARTED_DATE)
 
   useEffect(() => {
+    ReactGA.pageview(window.location.pathname)
     setTimeout(() => {
       setLoading(false)
     }, 1)
@@ -63,24 +67,46 @@ export default function Home() {
         <Connect>
           <Row>
             <Icon icon="carbon:email" />
-            <Link href="mailto:evg.hann@gmail.com">evg.hann@gmail.com</Link>
+            <Link
+              href="mailto:evg.hann@gmail.com"
+              onClick={() => ReactGA.event({ category: 'contact', action: 'email' })}
+            >
+              evg.hann@gmail.com
+            </Link>
           </Row>
           <Row>
             <Icon icon="carbon:phone" />
-            <Link href="tel:+351921661454">+351 921-661-454</Link>
+            <Link href="tel:+351921661454" onClick={() => ReactGA.event({ category: 'contact', action: 'phone' })}>
+              +351 921-661-454
+            </Link>
           </Row>
           <Socials>
-            <Link href="https://t.me/evghann" target="_blank" rel="noreferrer">
+            <Link
+              href="https://t.me/evghann"
+              onClick={() => ReactGA.event({ category: 'contact', action: 'telegram' })}
+              target="_blank"
+              rel="noreferrer"
+            >
               <IconButton>
                 <Icon icon="akar-icons:telegram-fill" />
               </IconButton>
             </Link>
-            <Link href="https://www.linkedin.com/in/yauheni-hannutsyn-a9283220a/" target="_blank" rel="noreferrer">
+            <Link
+              href="https://www.linkedin.com/in/yauheni-hannutsyn-a9283220a/"
+              onClick={() => ReactGA.event({ category: 'contact', action: 'linkedin' })}
+              target="_blank"
+              rel="noreferrer"
+            >
               <IconButton>
                 <Icon icon="akar-icons:linkedin-fill" />
               </IconButton>
             </Link>
-            <Link href="https://github.com/hannutsyn" target="_blank" rel="noreferrer">
+            <Link
+              href="https://github.com/hannutsyn"
+              onClick={() => ReactGA.event({ category: 'contact', action: 'github' })}
+              target="_blank"
+              rel="noreferrer"
+            >
               <IconButton>
                 <Icon icon="akar-icons:github-fill" />
               </IconButton>

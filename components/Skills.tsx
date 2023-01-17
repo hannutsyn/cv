@@ -4,6 +4,7 @@ import Button from 'components/Cell'
 import cn from 'classnames'
 import Icon from 'components/Icon'
 import { useEffect, useState } from 'react'
+import ReactGA from 'react-ga'
 
 const mainSkills = [
   { name: 'CSS', icon: 'akar-icons:css-fill', color: '#264de4' },
@@ -32,8 +33,10 @@ const Skills = () => {
   const [skills, setSkills] = useState<string[]>([])
   const [blow, setBlow] = useState(false)
 
-  const handleToggleSkill = (skill: string) =>
+  const handleToggleSkill = (skill: string) => {
+    ReactGA.event({ category: 'skill', action: skill })
     setSkills((prev) => (prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]))
+  }
 
   const blowFn = () => {
     setBlow(true)

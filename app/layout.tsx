@@ -2,8 +2,6 @@
 import 'globals.css'
 import { Baloo_2 } from '@next/font/google'
 import styled from 'styled-components'
-import { Suspense } from 'react'
-import Loading from './loading'
 
 const baloo = Baloo_2({ weight: ['400', '500', '600'], style: ['normal'], subsets: ['latin'] })
 

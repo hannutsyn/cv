@@ -1,9 +1,9 @@
 'use-client'
 import styled from 'styled-components'
-import Button from 'components/Cell'
+import SkillCell from 'components/SkillCell'
 import cn from 'classnames'
 import Icon from 'components/Icon'
-import { useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import ReactGA from 'react-ga'
 
 const mainSkills = [
@@ -31,19 +31,22 @@ const mainSkills = [
 
 const Skills = () => {
   const [skills, setSkills] = useState<string[]>([])
-  const [blow, setBlow] = useState(false)
+  const [all, setAll] = useState(false)
 
-  const handleToggleSkill = (skill: string) => {
+  const toggleSkill = useCallback((skill: string) => {
     ReactGA.event({ category: 'skill', action: skill })
     setSkills((prev) => (prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]))
-  }
+  }, [])
 
-  const blowFn = () => {
-    setBlow(true)
+  const isSkillSelected = useCallback((name: string) => skills.includes(name), [skills])
+
+  const allFn = () => {
+    ReactGA.event({ category: 'all', action: 'all' })
+    setAll(true)
   }
 
   useEffect(() => {
-    mainSkills.length === skills.length ? blowFn() : setBlow(false)
+    mainSkills.length === skills.length ? allFn() : setAll(false)
   }, [skills.length])
 
   return (
@@ -51,14 +54,15 @@ const Skills = () => {
       <h3>Skills</h3>
       <SkillsGrid>
         {mainSkills.map(({ icon, color, name }) => (
-          <Button
-            className={cn({ isSelected: skills.includes(name), blow })}
+          <SkillCell
             icon={<Icon icon={icon} color={color} />}
-            onClick={() => handleToggleSkill(name)}
+            isSelected={isSkillSelected(name)}
+            isAll={all}
+            onClick={() => toggleSkill(name)}
             key={name}
           >
             {name}
-          </Button>
+          </SkillCell>
         ))}
       </SkillsGrid>
     </Container>
@@ -80,22 +84,6 @@ const SkillsGrid = styled.div`
   @media screen and (max-width: 520px) {
     grid-template-columns: 1fr 1fr;
   }
-
-  .isSelected {
-    background-color: #98ff83a3;
-  }
-
-  .blow {
-    animation: colored 1.5s 2 linear;
-    @keyframes colored {
-      from {
-        filter: hue-rotate(0deg);
-      }
-      to {
-        filter: hue-rotate(-360deg);
-      }
-    }
-  }
 `
 
-export default Skills
+export default memo(Skills)

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, memo } from 'react'
 import { Icon as IconComponent, IconProps } from '@iconify/react'
 import styled from 'styled-components'
 
@@ -18,4 +18,4 @@ export const IconPlusMinus90Deg = styled(Icon)`
   transform: rotate(-90deg);
 `
 
-export default Icon
+export default memo(Icon)

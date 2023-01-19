@@ -1,4 +1,5 @@
-import React, { ButtonHTMLAttributes, cloneElement, FC, isValidElement, ReactElement, ReactNode, memo } from 'react'
+import React, { ButtonHTMLAttributes, FC, ReactNode, memo } from 'react'
+import cn from 'classnames'
 import styled from 'styled-components'
 
 const StyledCell = styled.button`
@@ -12,6 +13,21 @@ const StyledCell = styled.button`
   border: 0.5px solid #cccccc4f;
   transition: all 0.35s;
   cursor: pointer;
+
+  &.isSelected {
+    background-color: #98ff83a3;
+  }
+  &.isAll {
+    animation: colored 1.5s 2 linear;
+    @keyframes colored {
+      from {
+        filter: hue-rotate(0deg);
+      }
+      to {
+        filter: hue-rotate(-360deg);
+      }
+    }
+  }
 
   &:disabled {
     opacity: 0.5;
@@ -38,20 +54,18 @@ const StyledCell = styled.button`
 `
 
 interface CellProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  icon?: ReactNode
+  icon: ReactNode
+  isSelected: boolean
+  isAll: boolean
 }
 
-const Cell: FC<CellProps> = ({ children, icon, ...rest }) => {
-  const cellIcon = icon && isValidElement(icon) && cloneElement(icon as ReactElement)
-
-  return (
-    <StyledCell {...rest}>
-      <div className="content">
-        {cellIcon}
-        <span className="text">{children}</span>
-      </div>
-    </StyledCell>
-  )
-}
+const Cell: FC<CellProps> = ({ children, icon, isSelected, isAll, className, ...rest }) => (
+  <StyledCell className={cn(className, { isSelected, isAll })} {...rest}>
+    <div className="content">
+      {icon}
+      <span className="text">{children}</span>
+    </div>
+  </StyledCell>
+)
 
 export default memo(Cell)

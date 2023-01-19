@@ -1,88 +1,78 @@
 'use client'
-
+import { useState } from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import Icon from 'components/Icon'
 import { IconButton } from 'components/IconButton'
-import React, { FC, useEffect, useState } from 'react'
-import Loading from './loading'
+import React, { useEffect } from 'react'
 import Skills from 'components/Skills'
 import InfoBlock from 'components/InfoBlock'
 import WorkPoint from 'components/WorkPoint'
 import Language from 'components/Language'
 import ReactGA from 'react-ga'
+import { config, timePassedFrom } from 'utils'
 
-const STARTED_DATE = new Date('September 1, 2018')
-
-ReactGA.initialize('UA-254311165-1')
+ReactGA.initialize(config.GA_KEY)
 
 export default function Home() {
   const [isLoading, setLoading] = useState(true)
 
-  function timePassedFrom(date: Date): { years: number; months: number } {
-    const msInDay = 1000 * 60 * 60 * 24
-    const currentDate = new Date()
-    const timePassed = currentDate.getTime() - date.getTime()
-    const years = Math.floor(timePassed / (msInDay * 365))
-    const months = Math.floor((timePassed / (msInDay * 30)) % 12)
-    return { years, months }
-  }
+  const {
+    LOCATION,
+    STARTED_DATE,
+    EMAIL,
+    PHONE,
+    TELEGRAM,
+    LINKEDIN,
+    GITHUB,
+    EXPERIENCE,
+    EDUCATION,
+  } = config
 
   const { years, months } = timePassedFrom(STARTED_DATE)
 
   useEffect(() => {
-    ReactGA.pageview(window.location.pathname)
-    setTimeout(() => {
-      setLoading(false)
-    }, 1)
+    ReactGA.pageview(window?.location.pathname)
+    setLoading(false)
   }, [])
 
-  if (isLoading) {
-    return <Loading />
-  }
+  if (isLoading) return null
 
   return (
     <Container>
       <Header>
         <Title>
           <Main>
-            <span style={{ fontSize: '24px', fontWeight: '600', color: '#181818' }}>Yauheni&nbsp;Hannutsyn</span>
+            <Name>Yauheni&nbsp;Hannutsyn</Name>
             <Subtitle>Frontend&nbsp;Developer</Subtitle>
           </Main>
           <Location>
             <Icon icon="carbon:location" color="#617a8e" />
-            <span
-              style={{
-                fontSize: '16px',
-                fontWeight: '500',
-                color: '#617a8e',
-                marginLeft: '4px',
-                marginRight: '4px',
-              }}
-            >
-              Porto, Portugal
-            </span>
+            <LocationText>{LOCATION}</LocationText>
           </Location>
         </Title>
         <Connect>
           <Row>
             <Icon icon="carbon:email" />
             <Link
-              href="mailto:evg.hann@gmail.com"
+              href={`mailto:${EMAIL}`}
               onClick={() => ReactGA.event({ category: 'contact', action: 'email' })}
             >
-              evg.hann@gmail.com
+              {EMAIL}
             </Link>
           </Row>
           <Row>
             <Icon icon="carbon:phone" />
-            <Link href="tel:+351921661454" onClick={() => ReactGA.event({ category: 'contact', action: 'phone' })}>
-              +351 921-661-454
+            <Link
+              href={`tel:${PHONE}`}
+              onClick={() => ReactGA.event({ category: 'contact', action: 'phone' })}
+            >
+              {PHONE}
             </Link>
           </Row>
           <Socials>
             <Link
-              href="https://t.me/evghann"
+              href={TELEGRAM}
               onClick={() => ReactGA.event({ category: 'contact', action: 'telegram' })}
               target="_blank"
               rel="noreferrer"
@@ -92,7 +82,7 @@ export default function Home() {
               </IconButton>
             </Link>
             <Link
-              href="https://www.linkedin.com/in/yauheni-hannutsyn-a9283220a/"
+              href={LINKEDIN}
               onClick={() => ReactGA.event({ category: 'contact', action: 'linkedin' })}
               target="_blank"
               rel="noreferrer"
@@ -102,7 +92,7 @@ export default function Home() {
               </IconButton>
             </Link>
             <Link
-              href="https://github.com/hannutsyn"
+              href={GITHUB}
               onClick={() => ReactGA.event({ category: 'contact', action: 'github' })}
               target="_blank"
               rel="noreferrer"
@@ -115,37 +105,35 @@ export default function Home() {
         </Connect>
       </Header>
       <InfoBlock title="Languages:">
-        <div style={{ display: 'flex' }}>
-          <Language icon={<Icon icon="emojione:flag-for-russia" />} language="Russian" level="native" />
-          <Language icon={<Icon icon="emojione:flag-for-united-states" />} language="English" level="B2" />
+        <Languages>
+          <Language
+            icon={<Icon icon="emojione:flag-for-russia" />}
+            language="Russian"
+            level="native"
+          />
+          <Language
+            icon={<Icon icon="emojione:flag-for-united-states" />}
+            language="English"
+            level="B2"
+          />
           <Language icon={<Icon icon="emojione:flag-for-poland" />} language="Polish" level="A2" />
-        </div>
+        </Languages>
       </InfoBlock>
 
       <InfoBlock title="Education:" subtitle="[ 2010 - 2015 ]">
-        <div>Yanka Kupala State University of Grodno</div>
-        <div>Bachelor of Mechanical Engineering</div>
+        <div>{EDUCATION.title}</div>
+        <div>{EDUCATION.degree}</div>
       </InfoBlock>
       <InfoBlock title="Experience:" subtitle={`[ ${years} years, ${months} months ]`}>
         <WorkPoint
-          company="Cogia Intelligence"
-          timeframe="[ Jun 2021 - present ]"
-          points={[
-            "Developed and maintained the company's flagship web application using React, Redux, and TypeScript",
-            'Implemented new features and enhancements to improve user experience',
-            'Collaborated with cross-functional teams to deliver high-quality software solutions',
-            'Led a team of junior developers and provided mentorship and guidance',
-          ]}
+          company={EXPERIENCE.COGIA.title}
+          timeframe={EXPERIENCE.COGIA.timeframe}
+          points={EXPERIENCE.COGIA.points}
         />
         <WorkPoint
-          company="Yellow Square"
-          timeframe="[ Sep 2018 - May 2021 ]"
-          points={[
-            'Involved in client-side app development, including implementing new features, fixing bugs, and making UI/UX improvements',
-            'Had regular communication with the customer to understand their needs and gather feedback on the app',
-            "Worked on migrating to TypeScript, Redux/toolkit to improve the app's performance and maintainability",
-            'Utilized technologies such as TypeScript, React, Redux/toolkit, styled-components, Formik, MaterialUI, React Testing Library',
-          ]}
+          company={EXPERIENCE.YS.title}
+          timeframe={EXPERIENCE.YS.timeframe}
+          points={EXPERIENCE.YS.points}
         />
       </InfoBlock>
       <Skills />
@@ -173,6 +161,11 @@ const Header = styled.div`
     flex-direction: column;
   }
 `
+const Name = styled.span`
+  font-size: 24px;
+  font-weight: 600;
+  color: #181818;
+`
 
 const Subtitle = styled.span`
   font-size: 20px;
@@ -197,6 +190,13 @@ const Location = styled.div`
   align-items: end;
   margin-top: 8px;
 `
+const LocationText = styled.span`
+  font-size: 16px;
+  font-weight: 500;
+  color: #617a8e;
+  margin-left: 4px;
+  margin-right: 4px;
+`
 
 const Title = styled.div`
   display: flex;
@@ -209,6 +209,10 @@ const Title = styled.div`
     border-right: none;
     padding: 32px 32px 16px;
   }
+`
+
+const Languages = styled.div`
+  display: flex;
 `
 
 const Row = styled.div`

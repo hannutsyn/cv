@@ -56,7 +56,7 @@ export default function Home() {
             <Icon icon="carbon:email" />
             <Link
               href={`mailto:${EMAIL}`}
-              onClick={() => ReactGA.event({ category: 'contact', action: 'email' })}
+              onClick={() => ReactGA.event({ category: '[contact]', action: '[email]' })}
             >
               {EMAIL}
             </Link>
@@ -65,7 +65,7 @@ export default function Home() {
             <Icon icon="carbon:phone" />
             <Link
               href={`tel:${PHONE}`}
-              onClick={() => ReactGA.event({ category: 'contact', action: 'phone' })}
+              onClick={() => ReactGA.event({ category: '[contact]', action: '[phone]' })}
             >
               {PHONE}
             </Link>
@@ -73,7 +73,7 @@ export default function Home() {
           <Socials>
             <Link
               href={TELEGRAM}
-              onClick={() => ReactGA.event({ category: 'contact', action: 'telegram' })}
+              onClick={() => ReactGA.event({ category: '[contact]', action: '[telegram]' })}
               target="_blank"
               rel="noreferrer"
             >
@@ -83,7 +83,7 @@ export default function Home() {
             </Link>
             <Link
               href={LINKEDIN}
-              onClick={() => ReactGA.event({ category: 'contact', action: 'linkedin' })}
+              onClick={() => ReactGA.event({ category: '[contact]', action: '[linkedin]' })}
               target="_blank"
               rel="noreferrer"
             >
@@ -93,7 +93,7 @@ export default function Home() {
             </Link>
             <Link
               href={GITHUB}
-              onClick={() => ReactGA.event({ category: 'contact', action: 'github' })}
+              onClick={() => ReactGA.event({ category: '[contact]', action: '[github]' })}
               target="_blank"
               rel="noreferrer"
             >

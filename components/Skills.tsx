@@ -34,14 +34,14 @@ const Skills = () => {
   const [all, setAll] = useState(false)
 
   const toggleSkill = useCallback((skill: string) => {
-    ReactGA.event({ category: 'skill', action: skill })
+    ReactGA.event({ category: '[skill]', action: `[${skill}]` })
     setSkills((prev) => (prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]))
   }, [])
 
   const isSkillSelected = useCallback((name: string) => skills.includes(name), [skills])
 
   const allFn = () => {
-    ReactGA.event({ category: 'all', action: 'all' })
+    ReactGA.event({ category: '[all]', action: '[all]' })
     setAll(true)
   }
 
